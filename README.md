@@ -23,7 +23,7 @@ pip install -r requirements.txt
 2. Run:
 
 ```bash
-python pdf_splitter.py /path/to/folder
+python main.py /path/to/folder
 ```
 
 3. The tool reports the total page count.
