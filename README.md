@@ -27,8 +27,9 @@ python main.py /path/to/folder
 ```
 
 3. The tool reports the total page count.
-4. Enter sequential page ranges (1-based) until every page is covered.
-5. Confirm. Output is written to a `*_split` subfolder.
+4. Enter any page ranges you want (1-based). They do not have to start at 1 or be contiguous. Overlaps are rejected. Type `done` when finished.
+5. Confirm. Optionally give each part a custom name (Enter keeps the default).
+6. Output is written to a `*_split` subfolder. Skipped pages are not written.
 
 ### Example
 
@@ -36,26 +37,31 @@ python main.py /path/to/folder
 Found: report.pdf
 Total pages: 1000
 
-Pages left: 1000 (from 1 to 1000)
-Enter range 1 (e.g. 1-200): 1-200
+Pages free: 1000 of 1000
+Enter range 1 (e.g. 2-9): 2-200
 
-Pages left: 800 (from 201 to 1000)
-Enter range 2 (e.g. 201-400): 201-400
+Pages free: 801 of 1000
+Already selected: 2-200
+Enter range 2 (e.g. 2-9), or 'done' to finish: 500-600
 
-Pages left: 600 (from 401 to 1000)
-Enter range 3 (e.g. 401-600): 401-1000
+Pages free: 700 of 1000
+Already selected: 2-200, 500-600
+Enter range 3 (e.g. 2-9), or 'done' to finish: done
 
 --- Summary ---
-  Part 1: pages 1-200 (200 pages)
-  Part 2: pages 201-400 (200 pages)
-  Part 3: pages 401-1000 (600 pages)
+  Part 1: pages 2-200 (199 pages)
+  Part 2: pages 500-600 (101 pages)
+  Skipped: 1, 201-499, 601-1000 (700 pages)
 
 Confirm and split? [y/N]: y
 
+Optional custom names (press Enter to keep default):
+  Part 1 [report_part01_p2-200]: intro
+  Part 2 [report_part02_p500-600]: middle
+
 Writing to .../report_split
-  Created: report_part01_p1-200.pdf (...)
-  Created: report_part02_p201-400.pdf (...)
-  Created: report_part03_p401-1000.pdf (...)
+  Created: intro.pdf (...)
+  Created: middle.pdf (...)
 
 Done.
 ```
@@ -63,9 +69,10 @@ Done.
 ## Rules enforced
 
 - Pages are 1-based.
-- Ranges must be contiguous and sequential (no gaps, no overlaps).
+- Ranges can be any non-overlapping intervals (order does not matter; they are sorted for the summary).
+- Type `done` (or `d` / `stop`) after at least one range to finish.
 - Folder must contain exactly one PDF.
-- Output filenames include part number and page range.
+- Default output names include part number and page range. Custom names are optional and sanitized.
 
 ## License
 
